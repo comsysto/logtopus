@@ -1,0 +1,49 @@
+allprojects {
+    apply plugin: 'idea'
+    repositories {
+        mavenRepo(url: 'http://oss.sonatype.org/content/groups/sourceforge/')
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    group = 'com.comsysto.logtopus'
+    version = '0.1-DEV'
+    slf4jVersion = '1.6.1'
+
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+
+    sourceSets {
+        main {
+            resources {
+                srcDir 'src/main/resources'
+                srcDir 'src/main/java'
+            }
+        }
+        test {
+            resources {
+                srcDir 'src/test/resources'
+                srcDir 'src/test/java'
+            }
+        }
+    }
+
+    repositories {
+        mavenRepo(url: 'http://oss.sonatype.org/content/groups/sourceforge/')
+    }
+
+    dependencies {
+        loggingDeps = [
+                "org.slf4j:slf4j-log4j12:$slf4jVersion",
+                "org.slf4j:jcl-over-slf4j:$slf4jVersion",
+                "org.slf4j:slf4j-api:$slf4jVersion",
+                'log4j:log4j:1.2.16'
+        ]
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-rc-2'
+}

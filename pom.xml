@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.comsysto.logtopus</groupId>
+    <artifactId>logtopus-parent</artifactId>
+    <name>Logtopus Parent POM</name>
+    <version>0.1-DEV</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>logtopus-logger</module>
+        <module>logtopus-example</module>
+    </modules>
+
+    <properties>
+        <mongo.version>2.3</mongo.version>
+        <log4j.version>1.2.16</log4j.version>
+        <slf4j.version>1.6.1</slf4j.version>
+    </properties>
+
+
+    <!-- TODO: License, Developers -->
+
+</project>

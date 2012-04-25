@@ -1,1 +1,6 @@
-apply plugin: 'java'
+defaultTasks "build"
+archivesBaseName = 'logtopus-logger'
+
+dependencies {
+    compile loggingDeps
+}
