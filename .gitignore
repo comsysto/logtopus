@@ -9,3 +9,5 @@ bin
 out/
 logs/
 classes
+build
+.gradle
