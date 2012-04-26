@@ -15,6 +15,11 @@ class LogEventController {
         [logEventInstanceList: LogEvent.list(params), logEventInstanceTotal: LogEvent.count()]
     }
 
+    def filterList() {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [logEventInstanceList: LogEvent.list(params), logEventInstanceTotal: LogEvent.count()]
+    }
+
     def create() {
         [logEventInstance: new LogEvent(params)]
     }
