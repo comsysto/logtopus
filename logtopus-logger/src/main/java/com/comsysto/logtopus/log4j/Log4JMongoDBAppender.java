@@ -18,68 +18,120 @@ import java.util.Calendar;
 import java.util.Properties;
 
 /**
+ * Appender for enabling log event persistence to MongoDB.
+ * Supports various fields to be stored with the documents.
+ *
  * @author Benjamin Steinert
  */
+@SuppressWarnings("UnusedDeclaration")
 public class Log4JMongoDBAppender extends AppenderSkeleton {
 
-    protected String host = "localhost";
-    protected int port = 27017;
-    protected String databaseName = "logtopus";
-
-    // not yet in use...
-    //protected String userName;
-    //protected String password;
-
-    protected String applicationName = "";
-
-    protected Mongo mongo;
-    protected DB database;
+    private String host = "localhost";
+    private int port = 27017;
+    private String databaseName = "logtopus";
+    private String applicationName;
     private String hostName;
     private String ipAddress;
     private String version;
 
-    public String getHost() {
-        return host;
-    }
+    private Mongo mongo;
+    private DB database;
 
-    public void setHost(String host) {
-        this.host = host;
-    }
+    // not yet in use...
+    private String userName;
+    private String password;
 
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getApplicationName() {
-        return applicationName;
-    }
-
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
-    }
-
-    public String getDatabaseName() {
-        return databaseName;
-    }
-
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
-    }
-
-    private void connect() throws UnknownHostException {
-        this.mongo = new Mongo(host, port);
-        this.database = mongo.getDB(databaseName);
-    }
 
     public Log4JMongoDBAppender() {
         super();
         loadConnectionProperties();
         lookupMachineDetails();
         lookupApplicationDetailsFromManifest();
+    }
+
+    /**
+     * Define host address of the MongoDB server.
+     */
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    /**
+     * Define port MongoDB is listening to.
+     */
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    /**
+     * Returns application name either retrieved from MANIFEST.MF of set via log4j config.
+     */
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    /**
+     * Returns version of the logging application. Either fetched from manifest
+     * or set via log4j configuration.
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * Version of the application, using this Appender.
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    /**
+     * The owning application identifier.
+     */
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    /**
+     * Returns MongoDB database name used for storing log entries.
+     */
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
+    /**
+     * This database name is used when connecting to MongoDB.
+     */
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+    }
+
+    /**
+     * Username for MongoDB authentication.
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    /**
+     * Password to be used for connecting to defined MongoDB database.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    private void connect() throws UnknownHostException {
+        mongo = new Mongo(host, port);
+        database = mongo.getDB(databaseName);
+        if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)){
+            System.out.println("Logtopus initialized with development credentials for MongoDB.");
+        } else {
+            boolean authenticated = database.authenticate(userName, password.toCharArray());
+            if(!authenticated){
+                throw new RuntimeException("Invalid username/password for logtopus database!");
+            }
+        }
     }
 
     private void lookupApplicationDetailsFromManifest() {
@@ -109,6 +161,8 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
     private void loadConnectionProperties() {
         //TODO: Load MongoDB credentials from an additional file.
+        userName = "";
+        password = "";
     }
 
     @Override
@@ -121,8 +175,8 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         dbObject.put("logger", event.getLogger().getName());
         dbObject.put("level", event.getLevel().toString());
         dbObject.put("message", event.getMessage());
-        dbObject.put("ip", ipAddress);
-        dbObject.put("host",hostName);
+        dbObject.put("host.ip", ipAddress);
+        dbObject.put("host.name", hostName);
 
         appendVersion(dbObject);
         appendApplicationName(dbObject);
@@ -134,13 +188,13 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
     private void appendVersion(DBObject dbObject) {
         if(StringUtils.isNotEmpty(version)){
-            dbObject.put("version",version);
+            dbObject.put("app.version",version);
         }
     }
 
     private void appendApplicationName(DBObject dbObject) {
         if (StringUtils.isNotEmpty(applicationName)) {
-            dbObject.put("app", applicationName);
+            dbObject.put("app.name", applicationName);
         }
     }
 
@@ -152,7 +206,6 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
     private void appendStackTrace(LoggingEvent event, DBObject dbObject) {
         String[] stackTrace = event.getThrowableStrRep();
-
         if (notEmpty(stackTrace)) {
             BasicDBList list = new BasicDBList();
             list.addAll(Arrays.asList(stackTrace));
@@ -165,7 +218,7 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
     }
 
     private void checkDB() {
-        if (null == database) {
+        if (database == null) {
             try {
                 connect();
             } catch (UnknownHostException e) {
