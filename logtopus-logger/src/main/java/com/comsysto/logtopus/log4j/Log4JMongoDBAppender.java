@@ -6,13 +6,16 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Properties;
 
 /**
  * @author Benjamin Steinert
@@ -29,11 +32,11 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
     protected String applicationName = "";
 
-    protected String collectionPattern = "%c";
-    protected PatternLayout collectionLayout = new PatternLayout(collectionPattern);
-
     protected Mongo mongo;
     protected DB database;
+    private String hostName;
+    private String ipAddress;
+    private String version;
 
     public String getHost() {
         return host;
@@ -75,7 +78,34 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
     public Log4JMongoDBAppender() {
         super();
         loadConnectionProperties();
+        lookupMachineDetails();
+        lookupApplicationDetailsFromManifest();
     }
+
+    private void lookupApplicationDetailsFromManifest() {
+
+        Properties properties = new Properties();
+        try {
+            properties.load(getClass().getResourceAsStream("/META-INF/MANIFEST.MF"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        version = properties.getProperty("version", version);
+        applicationName = properties.getProperty("applicationName", applicationName);
+
+    }
+
+    private void lookupMachineDetails() {
+        try {
+            InetAddress localHost = InetAddress.getLocalHost();
+            hostName = localHost.getHostName();
+            ipAddress = localHost.getHostAddress();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private void loadConnectionProperties() {
         //TODO: Load MongoDB credentials from an additional file.
@@ -91,7 +121,10 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         dbObject.put("logger", event.getLogger().getName());
         dbObject.put("level", event.getLevel().toString());
         dbObject.put("message", event.getMessage());
+        dbObject.put("ip", ipAddress);
+        dbObject.put("host",hostName);
 
+        appendVersion(dbObject);
         appendApplicationName(dbObject);
         appendTimeStamp(event, dbObject);
         appendStackTrace(event, dbObject);
@@ -99,8 +132,14 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         database.getCollection("logs").insert(dbObject, WriteConcern.NORMAL);
     }
 
+    private void appendVersion(DBObject dbObject) {
+        if(StringUtils.isNotEmpty(version)){
+            dbObject.put("version",version);
+        }
+    }
+
     private void appendApplicationName(DBObject dbObject) {
-        if (null != applicationName) {
+        if (StringUtils.isNotEmpty(applicationName)) {
             dbObject.put("app", applicationName);
         }
     }
