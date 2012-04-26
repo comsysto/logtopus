@@ -51,6 +51,11 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.comsysto.logtopus</groupId>
+            <artifactId>logtopus-logger</artifactId>
+            <version>0.1-DEV</version>
+        </dependency>
     </dependencies>
 
 </project>
