@@ -5,7 +5,7 @@
     <appender name="mongo" class="com.comsysto.logtopus.log4j.Log4JMongoDBAppender">
         <param name="Threshold" value="DEBUG"/>
         <param name="databaseName" value="logtopus"/>
-        <param name="applicationName" value="LoggingTester"/>
+        <param name="applicationName" value="logtopus-example"/>
         <param name="version" value="0.1-DEV"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%5p %d [%t] (%F:%L) - %m%n"/>
