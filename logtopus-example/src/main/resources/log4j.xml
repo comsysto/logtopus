@@ -5,6 +5,7 @@
     <appender name="mongo" class="org.springframework.data.mongodb.log4j.MongoLog4jAppender">
         <param name="Threshold" value="DEBUG"/>
         <param name="database" value="logtopus-db"/>
+        <param name="applicationId" value="logtopus-example" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%5p %d [%t] (%F:%L) - %m%n"/>
         </layout>
