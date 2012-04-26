@@ -1,5 +1,6 @@
 package com.comsysto.logtopus
 
+import org.apache.log4j.Priority
 import org.springframework.dao.DataIntegrityViolationException
 
 class LogEventController {
@@ -8,6 +9,15 @@ class LogEventController {
 
     def index() {
         redirect(action: "filterList", params: params)
+    }
+
+    def levelPieChart() {
+        def debug = LogEvent.countByLevel(Priority.DEBUG.toString())
+        def info = LogEvent.countByLevel(Priority.INFO.toString())
+        def warn = LogEvent.countByLevel(Priority.WARN.toString())
+        def error = LogEvent.countByLevel(Priority.ERROR.toString())
+        def fatal = LogEvent.countByLevel(Priority.FATAL.toString())
+        [debugCount: debug, infoCount: info, warnCount:warn, errorCount:error, fatalCount:fatal]
     }
 
     def list() {
