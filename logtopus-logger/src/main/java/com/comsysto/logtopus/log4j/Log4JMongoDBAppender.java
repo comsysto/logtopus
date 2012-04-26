@@ -176,10 +176,10 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
         dbObject.put("logger", event.getLogger().getName());
         dbObject.put("level", event.getLevel().toString());
+        dbObject.put("location", event.getLocationInformation().fullInfo);
         dbObject.put("message", event.getRenderedMessage());
         dbObject.put("host.ip", ipAddress);
         dbObject.put("host.name", hostName);
-
         appendVersion(dbObject);
         appendApplicationName(dbObject);
         appendTimeStamp(event, dbObject);
