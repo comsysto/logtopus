@@ -24,11 +24,15 @@
 				<thead>
 					<tr>
 					
+						<g:sortableColumn property="applicationId" title="${message(code: 'logEvent.applicationId.label', default: 'Application Id')}" />
+					
 						<g:sortableColumn property="level" title="${message(code: 'logEvent.level.label', default: 'Level')}" />
 					
 						<g:sortableColumn property="message" title="${message(code: 'logEvent.message.label', default: 'Message')}" />
 					
 						<g:sortableColumn property="name" title="${message(code: 'logEvent.name.label', default: 'Name')}" />
+					
+						<g:sortableColumn property="timestamp" title="${message(code: 'logEvent.timestamp.label', default: 'Timestamp')}" />
 					
 					</tr>
 				</thead>
@@ -36,11 +40,15 @@
 				<g:each in="${logEventInstanceList}" status="i" var="logEventInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${logEventInstance.id}">${fieldValue(bean: logEventInstance, field: "level")}</g:link></td>
+						<td><g:link action="show" id="${logEventInstance.id}">${fieldValue(bean: logEventInstance, field: "applicationId")}</g:link></td>
+					
+						<td>${fieldValue(bean: logEventInstance, field: "level")}</td>
 					
 						<td>${fieldValue(bean: logEventInstance, field: "message")}</td>
 					
 						<td>${fieldValue(bean: logEventInstance, field: "name")}</td>
+					
+						<td><g:formatDate date="${logEventInstance.timestamp}" /></td>
 					
 					</tr>
 				</g:each>

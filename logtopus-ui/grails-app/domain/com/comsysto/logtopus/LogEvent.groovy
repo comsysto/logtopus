@@ -9,6 +9,8 @@ class LogEvent {
     String name
     String level
     String message
+    String applicationId
+    Date timestamp
 
     static constraints = {
     }

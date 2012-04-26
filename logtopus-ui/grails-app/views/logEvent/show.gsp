@@ -23,6 +23,15 @@
 			</g:if>
 			<ol class="property-list logEvent">
 			
+				<g:if test="${logEventInstance?.applicationId}">
+				<li class="fieldcontain">
+					<span id="applicationId-label" class="property-label"><g:message code="logEvent.applicationId.label" default="Application Id" /></span>
+					
+						<span class="property-value" aria-labelledby="applicationId-label"><g:fieldValue bean="${logEventInstance}" field="applicationId"/></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${logEventInstance?.level}">
 				<li class="fieldcontain">
 					<span id="level-label" class="property-label"><g:message code="logEvent.level.label" default="Level" /></span>
@@ -46,6 +55,15 @@
 					<span id="name-label" class="property-label"><g:message code="logEvent.name.label" default="Name" /></span>
 					
 						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${logEventInstance}" field="name"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${logEventInstance?.timestamp}">
+				<li class="fieldcontain">
+					<span id="timestamp-label" class="property-label"><g:message code="logEvent.timestamp.label" default="Timestamp" /></span>
+					
+						<span class="property-value" aria-labelledby="timestamp-label"><g:formatDate date="${logEventInstance?.timestamp}" /></span>
 					
 				</li>
 				</g:if>
