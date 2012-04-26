@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
  */
 public class LoggingTester {
 
-    private static Logger log = LoggerFactory.getLogger("logEvent");
+    private static Logger log = LoggerFactory.getLogger(LoggingTester.class);
 
     public static void main(String[] args){
         log.warn("this is my last warning...");
         log.error("this is an exception...", new ConcurrentModificationException("blub"));
 
-        logMultipleInfoMessages(10);
+        logMultipleInfoMessages(15);
     }
 
     private static void logMultipleInfoMessages(int numberOfMessages) {

@@ -178,8 +178,8 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         dbObject.put("level", event.getLevel().toString());
         dbObject.put("location", event.getLocationInformation().fullInfo);
         dbObject.put("message", event.getRenderedMessage());
-        dbObject.put("host.ip", ipAddress);
-        dbObject.put("host.name", hostName);
+        dbObject.put("hostIp", ipAddress);
+        dbObject.put("hostName", hostName);
         appendVersion(dbObject);
         appendApplicationName(dbObject);
         appendTimeStamp(event, dbObject);
@@ -217,13 +217,13 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
     private void appendVersion(DBObject dbObject) {
         if(StringUtils.isNotEmpty(version)){
-            dbObject.put("app.version",version);
+            dbObject.put("applicationVersion",version);
         }
     }
 
     private void appendApplicationName(DBObject dbObject) {
         if (StringUtils.isNotEmpty(applicationName)) {
-            dbObject.put("app.name", applicationName);
+            dbObject.put("applicationName", applicationName);
         }
     }
 

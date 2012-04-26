@@ -24,15 +24,17 @@
 				<thead>
 					<tr>
 					
-						<g:sortableColumn property="applicationId" title="${message(code: 'logEvent.applicationId.label', default: 'Application Id')}" />
+						<g:sortableColumn property="applicationName" title="${message(code: 'logEvent.applicationName.label', default: 'Application Name')}" />
+					
+						<g:sortableColumn property="applicationVersion" title="${message(code: 'logEvent.applicationVersion.label', default: 'Application Version')}" />
+					
+						<g:sortableColumn property="hostIp" title="${message(code: 'logEvent.hostIp.label', default: 'Host Ip')}" />
+					
+						<g:sortableColumn property="hostName" title="${message(code: 'logEvent.hostName.label', default: 'Host Name')}" />
 					
 						<g:sortableColumn property="level" title="${message(code: 'logEvent.level.label', default: 'Level')}" />
 					
-						<g:sortableColumn property="message" title="${message(code: 'logEvent.message.label', default: 'Message')}" />
-					
-						<g:sortableColumn property="name" title="${message(code: 'logEvent.name.label', default: 'Name')}" />
-					
-						<g:sortableColumn property="timestamp" title="${message(code: 'logEvent.timestamp.label', default: 'Timestamp')}" />
+						<g:sortableColumn property="location" title="${message(code: 'logEvent.location.label', default: 'Location')}" />
 					
 					</tr>
 				</thead>
@@ -40,15 +42,17 @@
 				<g:each in="${logEventInstanceList}" status="i" var="logEventInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${logEventInstance.id}">${fieldValue(bean: logEventInstance, field: "applicationId")}</g:link></td>
+						<td><g:link action="show" id="${logEventInstance.id}">${fieldValue(bean: logEventInstance, field: "applicationName")}</g:link></td>
+					
+						<td>${fieldValue(bean: logEventInstance, field: "applicationVersion")}</td>
+					
+						<td>${fieldValue(bean: logEventInstance, field: "hostIp")}</td>
+					
+						<td>${fieldValue(bean: logEventInstance, field: "hostName")}</td>
 					
 						<td>${fieldValue(bean: logEventInstance, field: "level")}</td>
 					
-						<td>${fieldValue(bean: logEventInstance, field: "message")}</td>
-					
-						<td>${fieldValue(bean: logEventInstance, field: "name")}</td>
-					
-						<td><g:formatDate date="${logEventInstance.timestamp}" /></td>
+						<td>${fieldValue(bean: logEventInstance, field: "location")}</td>
 					
 					</tr>
 				</g:each>

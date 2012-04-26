@@ -23,11 +23,38 @@
 			</g:if>
 			<ol class="property-list logEvent">
 			
-				<g:if test="${logEventInstance?.applicationId}">
+				<g:if test="${logEventInstance?.applicationName}">
 				<li class="fieldcontain">
-					<span id="applicationId-label" class="property-label"><g:message code="logEvent.applicationId.label" default="Application Id" /></span>
+					<span id="applicationName-label" class="property-label"><g:message code="logEvent.applicationName.label" default="Application Name" /></span>
 					
-						<span class="property-value" aria-labelledby="applicationId-label"><g:fieldValue bean="${logEventInstance}" field="applicationId"/></span>
+						<span class="property-value" aria-labelledby="applicationName-label"><g:fieldValue bean="${logEventInstance}" field="applicationName"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${logEventInstance?.applicationVersion}">
+				<li class="fieldcontain">
+					<span id="applicationVersion-label" class="property-label"><g:message code="logEvent.applicationVersion.label" default="Application Version" /></span>
+					
+						<span class="property-value" aria-labelledby="applicationVersion-label"><g:fieldValue bean="${logEventInstance}" field="applicationVersion"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${logEventInstance?.hostIp}">
+				<li class="fieldcontain">
+					<span id="hostIp-label" class="property-label"><g:message code="logEvent.hostIp.label" default="Host Ip" /></span>
+					
+						<span class="property-value" aria-labelledby="hostIp-label"><g:fieldValue bean="${logEventInstance}" field="hostIp"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${logEventInstance?.hostName}">
+				<li class="fieldcontain">
+					<span id="hostName-label" class="property-label"><g:message code="logEvent.hostName.label" default="Host Name" /></span>
+					
+						<span class="property-value" aria-labelledby="hostName-label"><g:fieldValue bean="${logEventInstance}" field="hostName"/></span>
 					
 				</li>
 				</g:if>
@@ -41,6 +68,24 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${logEventInstance?.location}">
+				<li class="fieldcontain">
+					<span id="location-label" class="property-label"><g:message code="logEvent.location.label" default="Location" /></span>
+					
+						<span class="property-value" aria-labelledby="location-label"><g:fieldValue bean="${logEventInstance}" field="location"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${logEventInstance?.logger}">
+				<li class="fieldcontain">
+					<span id="logger-label" class="property-label"><g:message code="logEvent.logger.label" default="Logger" /></span>
+					
+						<span class="property-value" aria-labelledby="logger-label"><g:fieldValue bean="${logEventInstance}" field="logger"/></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${logEventInstance?.message}">
 				<li class="fieldcontain">
 					<span id="message-label" class="property-label"><g:message code="logEvent.message.label" default="Message" /></span>
@@ -50,20 +95,20 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${logEventInstance?.name}">
+				<g:if test="${logEventInstance?.sha1}">
 				<li class="fieldcontain">
-					<span id="name-label" class="property-label"><g:message code="logEvent.name.label" default="Name" /></span>
+					<span id="sha1-label" class="property-label"><g:message code="logEvent.sha1.label" default="Sha1" /></span>
 					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${logEventInstance}" field="name"/></span>
+						<span class="property-value" aria-labelledby="sha1-label"><g:fieldValue bean="${logEventInstance}" field="sha1"/></span>
 					
 				</li>
 				</g:if>
 			
-				<g:if test="${logEventInstance?.timestamp}">
+				<g:if test="${logEventInstance?.time}">
 				<li class="fieldcontain">
-					<span id="timestamp-label" class="property-label"><g:message code="logEvent.timestamp.label" default="Timestamp" /></span>
+					<span id="time-label" class="property-label"><g:message code="logEvent.time.label" default="Time" /></span>
 					
-						<span class="property-value" aria-labelledby="timestamp-label"><g:formatDate date="${logEventInstance?.timestamp}" /></span>
+						<span class="property-value" aria-labelledby="time-label"><g:formatDate date="${logEventInstance?.time}" /></span>
 					
 				</li>
 				</g:if>
