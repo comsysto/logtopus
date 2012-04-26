@@ -25,6 +25,14 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>${mongo.version}</version>
         </dependency>
+
+        <!-- mongodb appender -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb-log4j</artifactId>
+            <version>1.0.1.RELEASE</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>log4j</groupId>
