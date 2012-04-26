@@ -6,6 +6,8 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
@@ -174,7 +176,7 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
         dbObject.put("logger", event.getLogger().getName());
         dbObject.put("level", event.getLevel().toString());
-        dbObject.put("message", event.getMessage());
+        dbObject.put("message", event.getRenderedMessage());
         dbObject.put("host.ip", ipAddress);
         dbObject.put("host.name", hostName);
 
@@ -182,8 +184,35 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         appendApplicationName(dbObject);
         appendTimeStamp(event, dbObject);
         appendStackTrace(event, dbObject);
+        appendSha1(event, dbObject);
 
         database.getCollection("logs").insert(dbObject, WriteConcern.NORMAL);
+    }
+
+    /**
+     * NEVER CHANGE ORDER OF ELEMENTS! THIS CAUSES A SHA MISMATCH WITH ALREADY EXISTING LOG ENTRIES!
+     * FIX ORDER IS:
+     *  - app name
+     *  - log level
+     *  - error message
+     *  - topmost exception (if existing))
+     *  - topmost exception occurrence (if existing))
+     */
+    private void appendSha1(LoggingEvent event, DBObject dbObject) {
+        StringBuilder hashString = new StringBuilder();
+        /*1*/hashString.append(applicationName);
+        /*2*/hashString.append(event.getLevel().toString());
+        /*3*/hashString.append(event.getRenderedMessage());
+
+        String[] throwableStrRep = event.getThrowableStrRep();
+        if(notEmpty(throwableStrRep)){
+            /*4*/hashString.append(throwableStrRep[0]);
+            /*5*/hashString.append(throwableStrRep[1]);
+        }
+
+        byte[] hash = DigestUtils.sha(hashString.toString());
+        String shaString = new String(Hex.encodeHex(hash));
+        dbObject.put("sha1", shaString);
     }
 
     private void appendVersion(DBObject dbObject) {
