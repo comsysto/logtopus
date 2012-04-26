@@ -7,7 +7,7 @@ class LogEventController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: "filterList", params: params)
     }
 
     def list() {
@@ -39,7 +39,7 @@ class LogEventController {
         def logEventInstance = LogEvent.get(params.id)
         if (!logEventInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'logEvent.label', default: 'LogEvent'), params.id])
-            redirect(action: "list")
+            redirect(action: "filterList")
             return
         }
 
@@ -50,7 +50,7 @@ class LogEventController {
         def logEventInstance = LogEvent.get(params.id)
         if (!logEventInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'logEvent.label', default: 'LogEvent'), params.id])
-            redirect(action: "list")
+            redirect(action: "filterList")
             return
         }
 
@@ -61,7 +61,7 @@ class LogEventController {
         def logEventInstance = LogEvent.get(params.id)
         if (!logEventInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'logEvent.label', default: 'LogEvent'), params.id])
-            redirect(action: "list")
+            redirect(action: "filterList")
             return
         }
 
@@ -91,14 +91,14 @@ class LogEventController {
         def logEventInstance = LogEvent.get(params.id)
         if (!logEventInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'logEvent.label', default: 'LogEvent'), params.id])
-            redirect(action: "list")
+            redirect(action: "filterList")
             return
         }
 
         try {
             logEventInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'logEvent.label', default: 'LogEvent'), params.id])
-            redirect(action: "list")
+            redirect(action: "filterList")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'logEvent.label', default: 'LogEvent'), params.id])
