@@ -24,4 +24,8 @@ class LogEvent {
 
     static constraints = {
     }
+
+    static def allLogLevels() {
+        ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL']
+    }
 }

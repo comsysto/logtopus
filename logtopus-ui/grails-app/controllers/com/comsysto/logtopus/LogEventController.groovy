@@ -27,7 +27,32 @@ class LogEventController {
 
     def filterList() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [logEventInstanceList: LogEvent.list(params), logEventInstanceTotal: LogEvent.count()]
+
+        //keep these values so we can rerender on the filters
+        flash.level = params.level
+        flash.hostName = params.hostName
+        flash.applicationVersion = params.applicationVersion
+        flash.applicationName = params.applicationName
+        flash.logMessage = params.logMessage
+
+        def query
+        def criteria = LogEvent.createCriteria()
+        def results
+        query = {
+            and {
+                like ("level", params.level + '%')
+                like ("hostName", params.hostName + '%')
+                like ("applicationVersion", params.applicationVersion + '%')
+                like ("applicationName", params.applicationName + '%')
+                like ("message", params.logMessage + '%')
+//                if(params.level){
+//                    eq('level', params.level )
+//                }
+            }
+        }
+        results = criteria.list(params, query)
+
+        [logEventInstanceList: results]
     }
 
     def create() {
