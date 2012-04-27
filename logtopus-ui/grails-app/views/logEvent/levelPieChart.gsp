@@ -10,6 +10,7 @@
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
+                ["Level", "Count"],
                 ['DEBUG', ${debugCount}],
                 ['INFO',     ${infoCount}],
                 ['WARN',      ${warnCount}],
