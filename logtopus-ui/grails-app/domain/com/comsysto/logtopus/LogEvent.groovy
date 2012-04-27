@@ -15,6 +15,7 @@ class LogEvent {
     String applicationVersion
     String applicationName
     String sha1
+    String exceptionName
 
     Date time
 

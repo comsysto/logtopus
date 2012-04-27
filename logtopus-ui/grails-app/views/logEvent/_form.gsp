@@ -18,6 +18,14 @@
 	<g:textField name="applicationVersion" value="${logEventInstance?.applicationVersion}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: logEventInstance, field: 'exceptionName', 'error')} ">
+	<label for="exceptionName">
+		<g:message code="logEvent.exceptionName.label" default="Exception Name" />
+		
+	</label>
+	<g:textField name="exceptionName" value="${logEventInstance?.exceptionName}" />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: logEventInstance, field: 'hostIp', 'error')} ">
 	<label for="hostIp">
 		<g:message code="logEvent.hostIp.label" default="Host Ip" />

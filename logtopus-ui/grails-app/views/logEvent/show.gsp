@@ -56,6 +56,13 @@
 						
 					</g:if>
 				
+					<g:if test="${logEventInstance?.exceptionName}">
+						<dt><g:message code="logEvent.exceptionName.label" default="Exception Name" /></dt>
+						
+							<dd><g:fieldValue bean="${logEventInstance}" field="exceptionName"/></dd>
+						
+					</g:if>
+				
 					<g:if test="${logEventInstance?.hostIp}">
 						<dt><g:message code="logEvent.hostIp.label" default="Host Ip" /></dt>
 						

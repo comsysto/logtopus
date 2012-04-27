@@ -48,13 +48,13 @@
 						
 							<g:sortableColumn property="applicationVersion" title="${message(code: 'logEvent.applicationVersion.label', default: 'Application Version')}" />
 						
+							<g:sortableColumn property="exceptionName" title="${message(code: 'logEvent.exceptionName.label', default: 'Exception Name')}" />
+						
 							<g:sortableColumn property="hostIp" title="${message(code: 'logEvent.hostIp.label', default: 'Host Ip')}" />
 						
 							<g:sortableColumn property="hostName" title="${message(code: 'logEvent.hostName.label', default: 'Host Name')}" />
 						
 							<g:sortableColumn property="level" title="${message(code: 'logEvent.level.label', default: 'Level')}" />
-						
-							<g:sortableColumn property="location" title="${message(code: 'logEvent.location.label', default: 'Location')}" />
 						
 							<th></th>
 						</tr>
@@ -67,13 +67,13 @@
 						
 							<td>${fieldValue(bean: logEventInstance, field: "applicationVersion")}</td>
 						
+							<td>${fieldValue(bean: logEventInstance, field: "exceptionName")}</td>
+						
 							<td>${fieldValue(bean: logEventInstance, field: "hostIp")}</td>
 						
 							<td>${fieldValue(bean: logEventInstance, field: "hostName")}</td>
 						
 							<td>${fieldValue(bean: logEventInstance, field: "level")}</td>
-						
-							<td>${fieldValue(bean: logEventInstance, field: "location")}</td>
 						
 							<td class="link">
 								<g:link action="show" id="${logEventInstance.id}" class="btn btn-small">Show &raquo;</g:link>
