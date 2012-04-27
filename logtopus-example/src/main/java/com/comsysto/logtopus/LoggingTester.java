@@ -70,7 +70,7 @@ public class LoggingTester {
             try{
                 getSomeSeriousExceptionStack();
             } catch (Exception e){
-                log.error("Internet Backup Procedure terminated with errors");
+                log.error("Internet Backup Procedure terminated with errors", e);
             }
             System.out.println("stack error");
         }
