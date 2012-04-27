@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.apache.commons.lang.time.DateUtils
 import org.apache.log4j.Priority
 import org.springframework.dao.DataIntegrityViolationException
+import java.text.SimpleDateFormat
 
 class LogEventController {
 
@@ -31,39 +32,42 @@ class LogEventController {
     def distributionBarChart() {
         def incidentCount  = [];
         def slots = [];
-        def timeRange = params.get('time', '1d');
+        def timeRange = params.get('time', '1h');
         def currentTime = Calendar.getInstance(Locale.GERMAN).getTime();
-        def Date lowerTime2;
-        def timeUnit;
+        def timeUnit = '';
+
         // TODO: maybe some parsing one day?
 
         switch (timeRange) {
             case "1h": // default splitting is in 5 minutes steps
+                def formatter = new SimpleDateFormat("H:mm");
                 def lowerTime1 = DateUtils.addHours(currentTime,-1);
-                for (def i = 1; i<12; i++){
-                    lowerTime2 = DateUtils.addMinutes(lowerTime1, i*5);
+                for (def i = 1; i<=6; i++){
+                    def lowerTime2 = DateUtils.addMinutes(lowerTime1, 10);
                     getCountForTimeSpan(incidentCount, lowerTime1, lowerTime2)
-                    slots.add(lowerTime1.getTimeString() + " - " + lowerTime2.getTimeString())
+                    slots.add(formatter.format(lowerTime1) + " - " + formatter.format(lowerTime2))
                     lowerTime1 = lowerTime2;
                 }
                 timeUnit = 'minutes';
                 break;
             case "1d":
+                def formatter = new SimpleDateFormat("H:mm");
                 def lowerTime1 = DateUtils.addDays(currentTime,-1);
-                for (def i = 1; i<12; i++){
-                    lowerTime2 = DateUtils.addHours(lowerTime1, i*2);
+                for (def i = 1; i<=6; i++){
+                    def lowerTime2 = DateUtils.addHours(lowerTime1, 4);
                     getCountForTimeSpan(incidentCount, lowerTime1, lowerTime2)
-                    slots.add(lowerTime1.getTimeString() + " - " + lowerTime2.getTimeString())
+                    slots.add(formatter.format(lowerTime1) + " bis " + formatter.format(lowerTime2))
                     lowerTime1 = lowerTime2;
                 }
                 timeUnit = 'hours';
                 break;
             case "1w":
+                def formatter = new SimpleDateFormat("d.M");
                 def lowerTime1 = DateUtils.addWeeks(currentTime,-1);
-                for (def i = 1; i<7; i++){
-                    lowerTime2 = DateUtils.addDays(lowerTime1, i);
+                for (def i = 1; i<=7; i++){
+                    def lowerTime2 = DateUtils.addDays(lowerTime1, 1);
                     getCountForTimeSpan(incidentCount, lowerTime1, lowerTime2)
-                    slots.add(lowerTime1.getDateString() + " - " + lowerTime2.getDateString())
+                    slots.add(formatter.format(lowerTime1) + " bis " + formatter.format(lowerTime2))
                     lowerTime1 = lowerTime2;
                 }
                 timeUnit = 'days';

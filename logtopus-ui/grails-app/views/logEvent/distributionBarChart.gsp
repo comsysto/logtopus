@@ -28,8 +28,10 @@
 
             var options = {
                 title: 'Level Distribution',
-                hAxis: {title: 'Log Level', titleTextStyle: {color: 'blue'}},
-                vAxis: {title: 'Time'}
+                width: '1400',
+                height: '300',
+                hAxis: {title: 'Time', titleTextStyle: {color: 'blue'}},
+                vAxis: {title: 'Count', titleTextStyle: {color: 'blue'}}
             };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
@@ -40,6 +42,6 @@
 </head>
 
 <body>
-<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<div id="chart_div"></div>
 </body>
 </html>
