@@ -28,6 +28,8 @@ import java.util.Properties;
 @SuppressWarnings("UnusedDeclaration")
 public class Log4JMongoDBAppender extends AppenderSkeleton {
 
+    private boolean logLocation = false;
+
     private String host = "localhost";
     private int port = 27017;
     private String databaseName = "logtopus";
@@ -116,6 +118,15 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
     }
 
     /**
+     * <p>Set to true, if you need full code location info in the log messages.
+     * !Very inefficient! Don' use it if runtime matters... </p>
+     * default = false
+     */
+    public void setLogLocation(boolean logLocation) {
+        this.logLocation = logLocation;
+    }
+
+    /**
      * Password to be used for connecting to defined MongoDB database.
      */
     public void setPassword(String password) {
@@ -176,10 +187,11 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
         dbObject.put("logger", event.getLogger().getName());
         dbObject.put("level", event.getLevel().toString());
-        dbObject.put("location", event.getLocationInformation().fullInfo);
         dbObject.put("message", event.getRenderedMessage());
         dbObject.put("hostIp", ipAddress);
         dbObject.put("hostName", hostName);
+
+        appendLocation(event, dbObject);
         appendVersion(dbObject);
         appendApplicationName(dbObject);
         appendTimeStamp(event, dbObject);
@@ -189,13 +201,19 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         database.getCollection("logs").insert(dbObject, WriteConcern.NORMAL);
     }
 
+    private void appendLocation(LoggingEvent event, DBObject dbObject) {
+        if(logLocation){
+            dbObject.put("location", event.getLocationInformation().fullInfo);
+        }
+    }
+
     /**
      * NEVER CHANGE ORDER OF ELEMENTS! THIS CAUSES A SHA MISMATCH WITH ALREADY EXISTING LOG ENTRIES!
      * FIX ORDER IS:
      *  - app name
      *  - log level
      *  - error message
-     *  - topmost exception (if existing))
+     *  - topmost exception name (if existing)
      *  - topmost exception occurrence (if existing))
      */
     private void appendSha1(LoggingEvent event, DBObject dbObject) {
@@ -206,8 +224,8 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
         String[] throwableStrRep = event.getThrowableStrRep();
         if(notEmpty(throwableStrRep)){
-            /*4*/hashString.append(throwableStrRep[0]);
-            /*5*/hashString.append(throwableStrRep[1]);
+            /*4*/hashString.append(extractExceptionName(throwableStrRep[0]));
+            /*5*/hashString.append(throwableStrRep[1].trim());
         }
 
         byte[] hash = DigestUtils.sha(hashString.toString());
@@ -239,7 +257,16 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
             BasicDBList list = new BasicDBList();
             list.addAll(Arrays.asList(stackTrace));
             dbObject.put("stacktrace", list);
+
+            String exceptionName = extractExceptionName(stackTrace[0]);
+            dbObject.put("exceptionName", exceptionName);
         }
+    }
+
+    private String extractExceptionName(String topStackEntry) {
+        String fullPackagePath = StringUtils.substringBefore(topStackEntry, ":");
+        String[] packageSplit = StringUtils.split(fullPackagePath, ".");
+        return packageSplit[packageSplit.length - 1];
     }
 
     private boolean notEmpty(String[] stackTrace) {
