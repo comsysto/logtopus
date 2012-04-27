@@ -1,23 +1,84 @@
 package com.comsysto.logtopus
 
+import grails.converters.JSON
+import org.apache.commons.lang.time.DateUtils
 import org.apache.log4j.Priority
 import org.springframework.dao.DataIntegrityViolationException
 
 class LogEventController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static DEBUG = Priority.DEBUG.toString();
+    static INFO = Priority.INFO.toString();
+    static WARN = Priority.WARN.toString();
+    static ERROR = Priority.ERROR.toString();
+    static FATAL = Priority.FATAL.toString();
+
 
     def index() {
         redirect(action: "filterList", params: params)
     }
 
     def levelPieChart() {
-        def debug = LogEvent.countByLevel(Priority.DEBUG.toString())
-        def info = LogEvent.countByLevel(Priority.INFO.toString())
-        def warn = LogEvent.countByLevel(Priority.WARN.toString())
-        def error = LogEvent.countByLevel(Priority.ERROR.toString())
-        def fatal = LogEvent.countByLevel(Priority.FATAL.toString())
+        def debug = LogEvent.countByLevel(DEBUG)
+        def info = LogEvent.countByLevel(INFO)
+        def warn = LogEvent.countByLevel(WARN)
+        def error = LogEvent.countByLevel(ERROR)
+        def fatal = LogEvent.countByLevel(FATAL)
         [debugCount: debug, infoCount: info, warnCount:warn, errorCount:error, fatalCount:fatal]
+    }
+
+    def distributionBarChart() {
+        def incidentCount  = [];
+        def slots = [];
+        def timeRange = params.get('time', '1d');
+        def currentTime = Calendar.getInstance(Locale.GERMAN).getTime();
+        def Date lowerTime2;
+        def timeUnit;
+        // TODO: maybe some parsing one day?
+
+        switch (timeRange) {
+            case "1h": // default splitting is in 5 minutes steps
+                def lowerTime1 = DateUtils.addHours(currentTime,-1);
+                for (def i = 1; i<12; i++){
+                    lowerTime2 = DateUtils.addMinutes(lowerTime1, i*5);
+                    getCountForTimeSpan(incidentCount, lowerTime1, lowerTime2)
+                    slots.add(lowerTime1.getTimeString() + " - " + lowerTime2.getTimeString())
+                    lowerTime1 = lowerTime2;
+                }
+                timeUnit = 'minutes';
+                break;
+            case "1d":
+                def lowerTime1 = DateUtils.addDays(currentTime,-1);
+                for (def i = 1; i<12; i++){
+                    lowerTime2 = DateUtils.addHours(lowerTime1, i*2);
+                    getCountForTimeSpan(incidentCount, lowerTime1, lowerTime2)
+                    slots.add(lowerTime1.getTimeString() + " - " + lowerTime2.getTimeString())
+                    lowerTime1 = lowerTime2;
+                }
+                timeUnit = 'hours';
+                break;
+            case "1w":
+                def lowerTime1 = DateUtils.addWeeks(currentTime,-1);
+                for (def i = 1; i<7; i++){
+                    lowerTime2 = DateUtils.addDays(lowerTime1, i);
+                    getCountForTimeSpan(incidentCount, lowerTime1, lowerTime2)
+                    slots.add(lowerTime1.getDateString() + " - " + lowerTime2.getDateString())
+                    lowerTime1 = lowerTime2;
+                }
+                timeUnit = 'days';
+                break;
+        };
+
+        [countOverTime: incidentCount , timeUnit: timeUnit , timeSlots: slots as JSON]
+    }
+
+    private void getCountForTimeSpan(ArrayList incidentCount, Date lowerTime1, Date lowerTime2) {
+        incidentCount.add(LogEvent.countByLevelAndTimeBetween(DEBUG, lowerTime1, lowerTime2));
+        incidentCount.add(LogEvent.countByLevelAndTimeBetween(INFO, lowerTime1, lowerTime2));
+        incidentCount.add(LogEvent.countByLevelAndTimeBetween(WARN, lowerTime1, lowerTime2));
+        incidentCount.add(LogEvent.countByLevelAndTimeBetween(ERROR, lowerTime1, lowerTime2));
+        incidentCount.add(LogEvent.countByLevelAndTimeBetween(FATAL, lowerTime1, lowerTime2));
     }
 
     def list() {
