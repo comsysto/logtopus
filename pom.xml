@@ -20,7 +20,22 @@
         <slf4j.version>1.6.1</slf4j.version>
     </properties>
 
+    <licenses>
+        <license>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <name>Apache License 2.0</name>
+        </license>
+    </licenses>
 
-    <!-- TODO: License, Developers -->
+    <developers>
+        <developer>
+            <name>Samer Al Hunaty</name>
+            <email>samer.alhunaty@comsysto.com</email>
+        </developer>
+        <developer>
+            <name>Benjamin Steinert</name>
+            <email>benjamin.steinert@comsysto.com</email>
+        </developer>
+    </developers>
 
 </project>
