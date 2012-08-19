@@ -1,0 +1,7 @@
+archivesBaseName = 'logtopus-example'
+
+dependencies {
+    compile project(':logtopus-logger')
+}
+
+

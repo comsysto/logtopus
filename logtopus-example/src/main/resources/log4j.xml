@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="mongo" class="com.comsysto.logtopus.log4j.Log4JMongoDBAppender">
+        <param name="Threshold" value="DEBUG"/>
+        <param name="databaseName" value="logtopus-db"/>
+        <param name="applicationName" value="logtopus-example"/>
+        <param name="version" value="0.1-DEV"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p %d [%t] (%F:%L) - %m%n"/>
+        </layout>
+    </appender>
+
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="mongo"/>
+    </root>
+
+</log4j:configuration>

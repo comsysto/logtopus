@@ -1,0 +1,14 @@
+target
+bin
+.iml
+.idea
+*.iml
+*.ipr
+*.iws
+.DS_Store
+out/
+logs/
+classes
+build
+.gradle
+gradle

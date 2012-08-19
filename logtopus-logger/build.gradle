@@ -1,0 +1,13 @@
+defaultTasks "build"
+archivesBaseName = 'logtopus-logger'
+
+dependencies {
+    compile 'org.slf4j:slf4j-log4j12:1.6.1'
+    compile "org.slf4j:jcl-over-slf4j:1.6.1"
+    compile "org.slf4j:slf4j-api:1.6.1"
+    compile "org.mongodb:mongo-java-driver:2.3"
+    compile "log4j:log4j:1.2.16"
+    compile "commons-lang:commons-lang:2.6"
+    compile "commons-codec:commons-codec:1.4"
+    testCompile "junit:junit:4.8.2"
+}
