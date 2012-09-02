@@ -22,6 +22,7 @@ public class LoggingTester {
             switch (level) {
                 case 0:
                     debug();
+                    info();
                     break;
                 case 1:
                     info();
@@ -30,12 +31,13 @@ public class LoggingTester {
                     warn();
                     break;
                 case 3:
+                    info();
                     error();
                     break;
             }
 
             try {
-                Thread.sleep((long) (10000.0d * rand2));
+                Thread.sleep((long) (5000.0d * rand2));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -50,7 +52,7 @@ public class LoggingTester {
     }
 
     private static void debug() {
-        if(Math.random()>0.9d){
+        if(Math.random()>0.5d){
             log.debug("nothing important!");
             System.out.println("debug");
         }

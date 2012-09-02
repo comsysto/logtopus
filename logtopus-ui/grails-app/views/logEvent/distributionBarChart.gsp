@@ -30,6 +30,7 @@
                 title: 'Level Distribution',
                 width: '1400',
                 height: '300',
+                colors: ['blue', 'green', 'orange', 'red', 'violet'],
                 hAxis: {title: 'Time', titleTextStyle: {color: 'blue'}},
                 vAxis: {title: 'Count', titleTextStyle: {color: 'blue'}}
             };

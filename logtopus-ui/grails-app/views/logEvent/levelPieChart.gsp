@@ -19,7 +19,8 @@
             ]);
 
             var options = {
-                title: 'Message Log Levels'
+                title: 'Message Log Levels',
+                colors: ['blue', 'green', 'orange', 'red', 'violet']
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
