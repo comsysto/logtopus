@@ -8,24 +8,11 @@
 		<div class="row-fluid">
 			<aside id="application-status" class="span3">
 				<div class="well sidebar-nav">
-					<h5>Application Status</h5>
-					<ul>
-						<li>App version: <g:meta name="app.version"/></li>
-						<li>Grails version: <g:meta name="app.grails.version"/></li>
-						<li>Groovy version: ${org.codehaus.groovy.runtime.InvokerHelper.getVersion()}</li>
-						<li>JVM version: ${System.getProperty('java.version')}</li>
-						<li>Controllers: ${grailsApplication.controllerClasses.size()}</li>
-						<li>Domains: ${grailsApplication.domainClasses.size()}</li>
-						<li>Services: ${grailsApplication.serviceClasses.size()}</li>
-						<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
-					</ul>
-					<h5>Installed Plugins</h5>
-					<ul>
-						<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
-							<li>${plugin.name} - ${plugin.version}</li>
-						</g:each>
-					</ul>
-				</div>
+					<h5>Current Distribution</h5>
+                    <div>
+                        <g:include controller="logEvent" action="levelPieChart"/>
+                    </div>
+                </div>
 			</aside>
 
 			<section id="main" class="span9">
