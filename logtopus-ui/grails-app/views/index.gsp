@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<meta name="layout" content="bootstrap"/>
-		<title>logtopus-ui</title>
 	</head>
 
 	<body>
@@ -32,17 +31,15 @@
 			<section id="main" class="span9">
 
 				<div class="hero-unit">
-					<h1>Welcome to logtopus-ui</h1>
+					<h1>Welcome to Logtopus</h1>
 				</div>
-					
+
 				<div class="row-fluid">
-					
+
 					<div class="span4">
 						<h2>Try It</h2>
 						<ul class="nav nav-list">
-							<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-								<li><g:link controller="${c.logicalPropertyName}">${c.naturalName}</g:link></li>
-							</g:each>
+                            <li><g:link controller="logEvent">Event Filter</g:link></li>
                             <li><a href="logEvent/distributionBarChart">Log Level Distribution</a></li>
                             <li><a href="logEvent/levelPieChart">Message Level Overview</a></li>
 						</ul>
@@ -52,6 +49,6 @@
 
 			</section>
 		</div>
-		
+
 	</body>
 </html>
