@@ -37,17 +37,21 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
     private String hostName;
     private String ipAddress;
     private String version;
+    private String buildNumber;
 
     private Mongo mongo;
     private DB database;
-
-    // not yet in use...
     private String userName;
     private String password;
 
+    private String versionKey;
+    private String appNameKey;
+    private String buildNrKey;
 
-    public Log4JMongoDBAppender() {
-        super();
+
+    @Override
+    public void activateOptions() {
+        super.activateOptions();
         loadConnectionProperties();
         lookupMachineDetails();
         lookupApplicationDetailsFromManifest();
@@ -87,6 +91,30 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
      */
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getVersionKey() {
+        return versionKey;
+    }
+
+    public void setVersionKey(String versionKey) {
+        this.versionKey = versionKey;
+    }
+
+    public String getAppNameKey() {
+        return appNameKey;
+    }
+
+    public void setAppNameKey(String appNameKey) {
+        this.appNameKey = appNameKey;
+    }
+
+    public String getBuildNrKey() {
+        return buildNrKey;
+    }
+
+    public void setBuildNrKey(String buildNrKey) {
+        this.buildNrKey = buildNrKey;
     }
 
     /**
@@ -138,7 +166,7 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         mongo = new Mongo(host, port);
         database = mongo.getDB(databaseName);
         if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)){
-            System.out.println("Logtopus initialized with development credentials for MongoDB.");
+            System.out.println("[LOGTOPUS] Logtopus initialized with development credentials for MongoDB.");
         } else {
             boolean authenticated = database.authenticate(userName, password.toCharArray());
             if(!authenticated){
@@ -151,13 +179,22 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
         Properties properties = new Properties();
         try {
-            properties.load(getClass().getResourceAsStream("/META-INF/MANIFEST.MF"));
+            properties.load(ClassLoader.getSystemResourceAsStream("META-INF/MANIFEST.MF"));
+
+            if(StringUtils.isNotBlank(versionKey)){
+                version = properties.getProperty(versionKey, version);
+            }
+            if(StringUtils.isNotBlank(appNameKey)){
+                applicationName = properties.getProperty(appNameKey, applicationName);
+            }
+            if(StringUtils.isNotBlank(buildNrKey)){
+                buildNumber = properties.getProperty(buildNrKey, buildNumber);
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("[LOGTOPUS] No MANIFEST.MF found for reading Application Version, Name and Build Number. Please set these values manually. ");
         }
 
-        version = properties.getProperty("version", version);
-        applicationName = properties.getProperty("applicationName", applicationName);
+
 
     }
 
@@ -173,9 +210,15 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
 
     private void loadConnectionProperties() {
-        //TODO: Load MongoDB credentials from an additional file.
-        userName = "";
-        password = "";
+        Properties properties = new Properties();
+        try {
+            properties.load(getClass().getResourceAsStream("/logtopus.properties"));
+            userName = properties.getProperty("username", "");
+            password = properties.getProperty("password", "");
+        } catch (Exception e) {
+            userName = "";
+            password = "";
+        }
     }
 
     @Override

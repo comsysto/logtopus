@@ -1,0 +1,2 @@
+version: 123.4
+applicationName: Title from MANIFEST
