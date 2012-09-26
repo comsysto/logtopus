@@ -16,6 +16,7 @@ class LogEvent {
     String applicationName
     String sha1
     String exceptionName
+    List<String> stacktrace
 
     Date time
 
@@ -25,6 +26,8 @@ class LogEvent {
 
     static constraints = {
     }
+
+    static mapWith = "mongo"
 
     static def allLogLevels() {
         ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL']

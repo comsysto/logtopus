@@ -155,7 +155,7 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
     /**
      * <p>Set to true, if you need full code location info in the log messages.
-     * !Very inefficient! Don' use it if runtime matters... </p>
+     * <b>Very inefficient!</b> Don't use it if runtime matters... </p>
      * default = false
      */
     public void setLogLocation(boolean logLocation) {
@@ -201,9 +201,6 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         } catch (IOException e) {
             System.out.println("[LOGTOPUS] No MANIFEST.MF found for reading Application Version, Name and Build Number. Please set these values manually. ");
         }
-
-
-
     }
 
     private void lookupMachineDetails() {
