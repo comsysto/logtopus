@@ -44,7 +44,7 @@
 								<li><g:link controller="${c.logicalPropertyName}">${c.naturalName}</g:link></li>
 							</g:each>
                             <li><a href="logEvent/distributionBarChart">Log Level Distribution</a></li>
-                            <li><a href="logEvent/distributionBarChart">Message Level Overview</a></li>
+                            <li><a href="logEvent/levelPieChart">Message Level Overview</a></li>
 						</ul>
 					</div>
 
