@@ -33,11 +33,11 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
     private String host = "localhost";
     private int port = 27017;
     private String databaseName = "logtopus";
-    private String applicationName;
+    private String applicationName = "undefined";
     private String hostName;
     private String ipAddress;
-    private String version;
-    private String buildNumber;
+    private String version = "undefined";
+    private String buildNumber = "";
 
     private Mongo mongo;
     private DB database;
@@ -99,6 +99,14 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
     public void setVersionKey(String versionKey) {
         this.versionKey = versionKey;
+    }
+
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber;
     }
 
     public String getAppNameKey() {
@@ -233,10 +241,9 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         dbObject.put("message", event.getRenderedMessage());
         dbObject.put("hostIp", ipAddress);
         dbObject.put("hostName", hostName);
-
+        dbObject.put("applicationVersion", version);
+        dbObject.put("applicationName", applicationName);
         appendLocation(event, dbObject);
-        appendVersion(dbObject);
-        appendApplicationName(dbObject);
         appendTimeStamp(event, dbObject);
         appendStackTrace(event, dbObject);
         appendSha1(event, dbObject);
@@ -276,17 +283,6 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         dbObject.put("sha1", shaString);
     }
 
-    private void appendVersion(DBObject dbObject) {
-        if(StringUtils.isNotEmpty(version)){
-            dbObject.put("applicationVersion",version);
-        }
-    }
-
-    private void appendApplicationName(DBObject dbObject) {
-        if (StringUtils.isNotEmpty(applicationName)) {
-            dbObject.put("applicationName", applicationName);
-        }
-    }
 
     private void appendTimeStamp(LoggingEvent event, DBObject dbObject) {
         Calendar calendar = Calendar.getInstance();
