@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <body>
-<div class="row-fluid">
+<div class="row-fluid" style="min-height: 700px">
     <aside id="application-status" class="span3">
         <div class="well sidebar-nav">
             <h5>Current Distribution</h5>

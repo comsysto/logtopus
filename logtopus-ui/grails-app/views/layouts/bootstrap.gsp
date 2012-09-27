@@ -11,7 +11,7 @@
     <meta name="viewport" content="initial-scale = 1.0">
 
     <!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"/>
     <![endif]-->
     <r:layoutResources/>
 
@@ -40,6 +40,9 @@
 <div class="container-fluid">
     %{--Actual Page content comes here--}%
     <g:layoutBody/>
+</div>
+
+<div class="container-fluid">
     <hr>
     <footer style="float: right;">
         <p>&copy; comSysto 2012 - Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p>
