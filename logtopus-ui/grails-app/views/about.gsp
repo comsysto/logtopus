@@ -1,8 +1,5 @@
 <!doctype html>
 <html>
-<head>
-    <meta name="layout" content="bootstrap"/>
-</head>
 <body>
 <div class="row-fluid">
     <aside id="application-status" class="span3">

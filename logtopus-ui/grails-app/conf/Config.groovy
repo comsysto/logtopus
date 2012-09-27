@@ -41,6 +41,8 @@ grails.views.gsp.encoding = "UTF-8"
 grails.converters.encoding = "UTF-8"
 // enable Sitemesh preprocessing of GSP pages
 grails.views.gsp.sitemesh.preprocess = true
+// allows to remove meta layout definition from pages
+grails.sitemesh.default.layout = 'bootstrap'
 // scaffolding templates configuration
 grails.scaffolding.templates.domainSuffix = 'Instance'
 
@@ -58,6 +60,9 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // enable query caching by default
 grails.hibernate.cache.queries = true
+
+// g:paginate fix
+grails.plugins.twitterbootstrap.fixtaglib = true
 
 // set per-environment serverURL stem for creating absolute links
 environments {
