@@ -28,6 +28,18 @@ import java.util.Properties;
 @SuppressWarnings("UnusedDeclaration")
 public class Log4JMongoDBAppender extends AppenderSkeleton {
 
+    public static final String LOGGER_FIELD_KEY = "logger";
+    public static final String LEVEL_FIELD_KEY = "level";
+    public static final String MESSAGE_FIELD_KEY = "message";
+    public static final String HOST_IP_FIELD_KEY = "hostIp";
+    public static final String HOST_NAME_FIELD_KEY = "hostName";
+    public static final String APPLICATION_VERSION_FIELD_KEY = "applicationVersion";
+    public static final String APPLICATION_NAME_FIELD_KEY = "applicationName";
+    public static final String LOCATION_FIELD_KEY = "location";
+    public static final String SHA_1_FIELD_KEY = "sha1";
+    public static final String TIME_FIELD_KEY = "time";
+    public static final String STACKTRACE_FIELD_KEY = "stacktrace";
+    public static final String EXCEPTION_NAME_FIELD_KEY = "exceptionName";
     private boolean logLocation = false;
 
     private String host = "localhost";
@@ -231,26 +243,39 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
 
         checkDB();
 
-        DBObject dbObject = new BasicDBObject();
+        String level = event.getLevel().toString();
+        String shaString = createSha1(event);
 
-        dbObject.put("logger", event.getLogger().getName());
-        dbObject.put("level", event.getLevel().toString());
-        dbObject.put("message", event.getRenderedMessage());
-        dbObject.put("hostIp", ipAddress);
-        dbObject.put("hostName", hostName);
-        dbObject.put("applicationVersion", version);
-        dbObject.put("applicationName", applicationName);
-        appendLocation(event, dbObject);
-        appendTimeStamp(event, dbObject);
-        appendStackTrace(event, dbObject);
-        appendSha1(event, dbObject);
+        DBObject logEntry = new BasicDBObject();
+        logEntry.put(LOGGER_FIELD_KEY, event.getLogger().getName());
+        logEntry.put(LEVEL_FIELD_KEY, level);
+        logEntry.put(MESSAGE_FIELD_KEY, event.getRenderedMessage());
+        logEntry.put(HOST_IP_FIELD_KEY, ipAddress);
+        logEntry.put(HOST_NAME_FIELD_KEY, hostName);
+        logEntry.put(APPLICATION_VERSION_FIELD_KEY, version);
+        logEntry.put(APPLICATION_NAME_FIELD_KEY, applicationName);
+        logEntry.put(SHA_1_FIELD_KEY, shaString);
 
-        database.getCollection("logs").insert(dbObject, WriteConcern.NORMAL);
+        appendLocation(event, logEntry);
+        appendTimeStamp(event, logEntry);
+        appendStackTrace(event, logEntry);
+
+        DBObject aggregate = new BasicDBObject();
+        aggregate.put(SHA_1_FIELD_KEY, shaString);
+        aggregate.put(APPLICATION_NAME_FIELD_KEY, applicationName);
+        aggregate.put(LEVEL_FIELD_KEY, level);
+        aggregate.put(EXCEPTION_NAME_FIELD_KEY, logEntry.get(EXCEPTION_NAME_FIELD_KEY));
+        DBObject increment = new BasicDBObject("n", 1);
+        BasicDBObject update = new BasicDBObject("$inc",increment);
+
+        database.getCollection("logs").insert(logEntry, WriteConcern.NORMAL);
+        database.getCollection("aggregates").update(aggregate, update, true, false);
+
     }
 
     private void appendLocation(LoggingEvent event, DBObject dbObject) {
         if(logLocation){
-            dbObject.put("location", event.getLocationInformation().fullInfo);
+            dbObject.put(LOCATION_FIELD_KEY, event.getLocationInformation().fullInfo);
         }
     }
 
@@ -264,10 +289,18 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
      *  - topmost exception occurrence (if existing))
      */
     private void appendSha1(LoggingEvent event, DBObject dbObject) {
+        String shaString = createSha1(event);
+        dbObject.put(SHA_1_FIELD_KEY, shaString);
+    }
+
+    private String createSha1(LoggingEvent event) {
         StringBuilder hashString = new StringBuilder();
-        /*1*/hashString.append(applicationName);
-        /*2*/hashString.append(event.getLevel().toString());
-        /*3*/hashString.append(event.getRenderedMessage());
+        /*1*/
+        hashString.append(applicationName);
+        /*2*/
+        hashString.append(event.getLevel().toString());
+        /*3*/
+        hashString.append(event.getRenderedMessage());
 
         String[] throwableStrRep = event.getThrowableStrRep();
         if(notEmpty(throwableStrRep)){
@@ -276,15 +309,14 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         }
 
         byte[] hash = DigestUtils.sha(hashString.toString());
-        String shaString = new String(Hex.encodeHex(hash));
-        dbObject.put("sha1", shaString);
+        return new String(Hex.encodeHex(hash));
     }
 
 
     private void appendTimeStamp(LoggingEvent event, DBObject dbObject) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(event.getTimeStamp());
-        dbObject.put("time", calendar.getTime());
+        dbObject.put(TIME_FIELD_KEY, calendar.getTime());
     }
 
     private void appendStackTrace(LoggingEvent event, DBObject dbObject) {
@@ -292,10 +324,10 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         if (notEmpty(stackTrace)) {
             BasicDBList list = new BasicDBList();
             list.addAll(Arrays.asList(stackTrace));
-            dbObject.put("stacktrace", list);
+            dbObject.put(STACKTRACE_FIELD_KEY, list);
 
             String exceptionName = extractExceptionName(stackTrace[0]);
-            dbObject.put("exceptionName", exceptionName);
+            dbObject.put(EXCEPTION_NAME_FIELD_KEY, exceptionName);
         }
     }
 
