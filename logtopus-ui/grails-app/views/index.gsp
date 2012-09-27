@@ -6,7 +6,7 @@
         <div class="well sidebar-nav">
             <h5>Current Distribution</h5>
             <div>
-                <g:include controller="logEvent" action="levelPieChart"/>
+                <g:include controller="charts" action="levelPieChart"/>
             </div>
         </div>
     </aside>
@@ -23,8 +23,10 @@
                 <h2>Try It</h2>
                 <ul class="nav nav-list">
                     <li><g:link controller="logEvent">Event Filter</g:link></li>
-                    <li><a href="logEvent/distributionBarChart">Log Level Distribution</a></li>
-                    <li><a href="logEvent/levelPieChart">Message Level Overview</a></li>
+                    <li><g:link controller="charts" action="distributionBarChart" params="[time: '1h']"> Distribution over the last Hour</g:link></li>
+                    <li><g:link controller="charts" action="distributionBarChart" params="[time: '1d']"> Distribution over the last Day</g:link></li>
+                    <li><g:link controller="charts" action="distributionBarChart" params="[time: '1w']"> Distribution over the last Week</g:link></li>
+                    <li><g:link controller="charts" action="levelPieChart">Total Overview</g:link> </li>
                 </ul>
             </div>
 

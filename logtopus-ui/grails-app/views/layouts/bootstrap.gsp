@@ -28,7 +28,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <a class="brand" href="${createLink(uri: '/')}">Logtopus</a>
+            <a class="brand" href="${createLink(uri: '/')}"><i class="icon-search icon-white"></i>Logtopus</a>
             <ul class="nav">
                 <li<%= request.forwardURI == "${createLink(uri: '/')}" ? ' class="active"' : '' %>><a href="${createLink(uri: '/')}">Dashboard</a></li>
                 <li<%= request.forwardURI == "${createLink(uri: '/about')}" ? ' class="active"' : '' %>><a href="${createLink(uri: '/about')}">About</a></li>
