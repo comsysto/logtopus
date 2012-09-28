@@ -37,7 +37,7 @@ class ChartsController {
         def currentTime = Calendar.getInstance(Locale.GERMAN).getTime();
         def timeUnit = '';
 
-        // TODO: maybe some parsing one day?
+        // TODO: maybe some parsing one day in order to enable custom spans?
 
         switch (timeRange) {
             case "1h": // default splitting is in 5 minutes steps

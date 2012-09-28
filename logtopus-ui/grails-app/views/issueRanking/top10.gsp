@@ -9,17 +9,10 @@
 
 <div class="row-fluid">
 
-    <aside class="span3">
-        <div class="well sidebar-nav">
-
-        </div>
-    </aside>
-
-    <div class="span9">
-
-        <div class="page-header">
-            <h1>Top 10 Issues</h1>
-        </div>
+    <div class="span12">
+        %{--<div class="page-header">--}%
+            <h2>Top 10 Issues</h2>
+        %{--</div>--}%
 
         <g:if test="${flash.message}">
             <bootstrap:alert class="alert-info">${flash.message}</bootstrap:alert>

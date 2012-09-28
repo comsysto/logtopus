@@ -42,8 +42,8 @@
 
 <div class="container-fluid">
     <hr>
-    <footer style="float: right;">
-        <p>&copy; comSysto 2012 - Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p>
+    <footer>
+        <p class="pull-right">&copy; comSysto 2012 - Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p>
     </footer>
 </div>
 
