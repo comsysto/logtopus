@@ -8,6 +8,13 @@
 <body>
 
 <div class="row-fluid">
+
+    <aside class="span3">
+        <div class="well sidebar-nav">
+
+        </div>
+    </aside>
+
     <div class="span9">
 
         <div class="page-header">

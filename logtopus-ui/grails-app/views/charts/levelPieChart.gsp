@@ -1,7 +1,6 @@
 <%@ page import="com.comsysto.logtopus.LogEvent" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Log Level Overview Chart</title>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
 
