@@ -11,14 +11,14 @@
     <div class="span9">
 
         <div class="page-header">
-            <h1><g:message code="default.list.label" args="[entityName]" /></h1>
+            <h1>Top 10 Issues</h1>
         </div>
 
         <g:if test="${flash.message}">
             <bootstrap:alert class="alert-info">${flash.message}</bootstrap:alert>
         </g:if>
 
-        <table class="table table-striped">
+        <table class="table">
             <thead>
             <tr>
                 <g:sortableColumn property="applicationName" title="${message(code: 'logEvent.applicationName.label', default: 'Application Name')}" />
@@ -31,7 +31,7 @@
             </thead>
             <tbody>
             <g:each in="${top10List}" var="item">
-                <tr>
+                <tr style="background-color: ${fieldValue(bean: item, field: "colorCode")};">
                     <td>${fieldValue(bean: item, field: "applicationName")}</td>
                     <td>${fieldValue(bean: item, field: "level")}</td>
                     <td>${fieldValue(bean: item, field: "exceptionName")}</td>

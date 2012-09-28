@@ -61,7 +61,7 @@
                             <g:select name='level'
                                       noSelection="['':'']"
                                       value="${flash.level}"
-                                      from='${LogEvent.allLogLevels()}'>
+                                      from='${LogEvent.logLevels}'>
                             </g:select>
                         </td>
                         <td valign='top' class='value'>
