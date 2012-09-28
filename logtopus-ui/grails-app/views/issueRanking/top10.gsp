@@ -1,5 +1,5 @@
 
-<%@ page import="com.comsysto.logtopus.Aggregate" %>
+<%@ page import="com.comsysto.logtopus.EventAggregate" %>
 <!doctype html>
 <html>
 <head>

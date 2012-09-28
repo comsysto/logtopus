@@ -18,12 +18,16 @@ class ChartsController {
     }
 
     def levelPieChart() {
-        def debug = LogEvent.countByLevel(DEBUG)
-        def info = LogEvent.countByLevel(INFO)
-        def warn = LogEvent.countByLevel(WARN)
-        def error = LogEvent.countByLevel(ERROR)
-        def fatal = LogEvent.countByLevel(FATAL)
-        [debugCount: debug, infoCount: info, warnCount:warn, errorCount:error, fatalCount:fatal]
+        def debug = LevelAggregate.findByLevel(DEBUG)
+        def info = LevelAggregate.findByLevel(INFO)
+        def warn = LevelAggregate.findByLevel(WARN)
+        def error = LevelAggregate.findByLevel(ERROR)
+        def fatal = LevelAggregate.findByLevel(FATAL)
+        [debugCount: debug == null ? 0 : debug.n,
+                infoCount: info == null ? 0 : info.n,
+                warnCount: warn == null ? 0 : warn.n,
+                errorCount: error == null ? 0 : error.n,
+                fatalCount: fatal == null ? 0 : fatal.n]
     }
 
     def distributionBarChart() {

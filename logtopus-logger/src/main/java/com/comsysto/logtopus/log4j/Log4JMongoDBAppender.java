@@ -260,16 +260,22 @@ public class Log4JMongoDBAppender extends AppenderSkeleton {
         appendTimeStamp(event, logEntry);
         appendStackTrace(event, logEntry);
 
-        DBObject aggregate = new BasicDBObject();
-        aggregate.put(SHA_1_FIELD_KEY, shaString);
-        aggregate.put(APPLICATION_NAME_FIELD_KEY, applicationName);
-        aggregate.put(LEVEL_FIELD_KEY, level);
-        aggregate.put(EXCEPTION_NAME_FIELD_KEY, logEntry.get(EXCEPTION_NAME_FIELD_KEY));
-        DBObject increment = new BasicDBObject("n", 1);
-        BasicDBObject update = new BasicDBObject("$inc",increment);
+        DBObject shaCount = new BasicDBObject();
+        shaCount.put(SHA_1_FIELD_KEY, shaString);
+        shaCount.put(APPLICATION_NAME_FIELD_KEY, applicationName);
+        shaCount.put(LEVEL_FIELD_KEY, level);
+        shaCount.put(EXCEPTION_NAME_FIELD_KEY, logEntry.get(EXCEPTION_NAME_FIELD_KEY));
+        DBObject shaCountInc = new BasicDBObject("n", 1);
+        BasicDBObject shaCountUpdate = new BasicDBObject("$inc",shaCountInc);
+
+        DBObject levelCount = new BasicDBObject();
+        levelCount.put(LEVEL_FIELD_KEY, level);
+        DBObject levelCountInc = new BasicDBObject("count", 1);
+        BasicDBObject levelCountUpdate = new BasicDBObject("$inc", levelCountInc);
 
         database.getCollection("logs").insert(logEntry, WriteConcern.NORMAL);
-        database.getCollection("aggregates").update(aggregate, update, true, false);
+        database.getCollection("aggregates").update(shaCount, shaCountUpdate, true, false);
+        database.getCollection("levels").update(levelCount, levelCountUpdate, true, false);
 
     }
 

@@ -3,7 +3,7 @@ package com.comsysto.logtopus
 import org.apache.log4j.Level
 import org.bson.types.ObjectId
 
-class Aggregate {
+class EventAggregate {
 
     ObjectId id
     int n

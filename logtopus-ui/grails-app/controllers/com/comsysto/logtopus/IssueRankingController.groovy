@@ -14,17 +14,17 @@ class IssueRankingController {
     def top10() {
         // did not find the possibility to limit the result with GORM,
         // so "low" level gmongo API is my friend :)...
-        def DBCollection aggregateColl = Aggregate.collection;
+        def DBCollection aggregateColl = EventAggregate.collection;
         def top10 = aggregateColl.find().sort((DBObject)sorting).limit(10);
         def result = []
 
         for (Object o : top10) {
-            result.add((Aggregate) o)
+            result.add((EventAggregate) o)
         }
 
-        def sortedResult = result.sort(new Comparator<Aggregate>() {
+        def sortedResult = result.sort(new Comparator<EventAggregate>() {
             @Override
-            int compare(Aggregate o1, Aggregate o2) {
+            int compare(EventAggregate o1, EventAggregate o2) {
                 return o2.levelToPriority().compareTo(o1.levelToPriority())
             }
         })
