@@ -2,7 +2,7 @@
 <html>
 <body>
 <div class="row-fluid" style="min-height: 700px">
-    <aside class="span4">
+    <aside class=" well span4">
         <div class="row-fluid">
             <h5>Current Distribution</h5>
             <div>
@@ -31,9 +31,13 @@
 
         <div class="hero-unit">
             <div class="row-fluid">
-                <h1 class=""><g:img dir="images" file="logtopus_icon_small.png"></g:img>&nbsp;Welcome&nbsp;to&nbsp;Logtopus</h1>
+                <span class="span2"><g:img dir="images" file="logtopus_icon_small.png"></g:img>&nbsp;</span>
+                <span class="span10">
+                    <h1>Welcome to Logtopus</h1>
+                    <p>Need a helping... tentacle?</p>
+                </span>
+
             </div>
-            <p class="row-fluid">Need a helping... tentacle?</p>
         </div>
 
         <g:include controller="issueRanking" action="top10"/>
