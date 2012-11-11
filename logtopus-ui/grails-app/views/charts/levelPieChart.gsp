@@ -1,4 +1,4 @@
-<%@ page import="com.comsysto.logtopus.LogEvent" contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.comsysto.logtopus.LogLevelUtil; com.comsysto.logtopus.LogEvent" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -19,7 +19,15 @@
 
             var options = {
                 title: 'Message Log Levels',
-                colors: ['blue', 'green', 'orange', 'red', 'violet']
+
+                colors: ['${LogLevelUtil.getColorCode('DEBUG')}',
+                    '${LogLevelUtil.getColorCode('INFO')}',
+                    '${LogLevelUtil.getColorCode('WARN')}',
+                    '${LogLevelUtil.getColorCode('ERROR')}',
+                    '${LogLevelUtil.getColorCode('FATAL')}'
+                ],
+                is3D: true,
+                pieSliceTextStyle: {color: 'black'}
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));

@@ -5,14 +5,6 @@ import org.bson.types.ObjectId
 
 class LogEvent {
 
-    public static final ArrayList<String> logLevels = [
-            Level.DEBUG.toString(),
-            Level.INFO.toString(),
-            Level.WARN.toString(),
-            Level.ERROR.toString(),
-            Level.FATAL.toString()
-    ]
-
     ObjectId id
     String logger
     String level

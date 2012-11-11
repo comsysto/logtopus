@@ -1,5 +1,5 @@
 
-<%@ page import="com.comsysto.logtopus.EventAggregate" %>
+<%@ page import="com.comsysto.logtopus.LogLevelUtil; com.comsysto.logtopus.EventAggregate" %>
 <!doctype html>
 <html>
 <head>
@@ -31,7 +31,7 @@
             </thead>
             <tbody>
             <g:each in="${top10List}" var="item">
-                <tr style="background-color: ${fieldValue(bean: item, field: "colorCode")};">
+                <tr style="background-color: ${LogLevelUtil.getColorCode(((EventAggregate)item).level)};">
                     <td>${fieldValue(bean: item, field: "applicationName")}</td>
                     <td>${fieldValue(bean: item, field: "level")}</td>
                     <td>${fieldValue(bean: item, field: "exceptionName")}</td>

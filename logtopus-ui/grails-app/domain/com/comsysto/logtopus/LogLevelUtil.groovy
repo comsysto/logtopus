@@ -1,18 +1,10 @@
 package com.comsysto.logtopus
 
 import org.apache.log4j.Level
-import org.bson.types.ObjectId
 
-class EventAggregate {
+ class LogLevelUtil {
 
-    ObjectId id
-    int n
-    String applicationName
-    String exceptionName
-    String level
-
-    // TODO: Use codes application-wide
-    public String getColorCode(){
+    public static String getColorCode(String level){
         switch (level){
             case Level.ERROR.toString():
                 return "#f08080" //lightcoral
@@ -27,12 +19,16 @@ class EventAggregate {
         }
     }
 
-    static mapping = {
-        collection "aggregates"
+
+    public static int levelToPriority(String level){
+        Level.toLevel(level).toInt();
     }
 
-    static constraints = {
-    }
-
-    static mapWith = "mongo"
+    public static final ArrayList<String> logLevels = [
+            Level.DEBUG.toString(),
+            Level.INFO.toString(),
+            Level.WARN.toString(),
+            Level.ERROR.toString(),
+            Level.FATAL.toString()
+    ]
 }

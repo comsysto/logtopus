@@ -1,5 +1,5 @@
 
-<%@ page import="com.comsysto.logtopus.LogEvent" %>
+<%@ page import="com.comsysto.logtopus.LogLevelUtil; com.comsysto.logtopus.LogEvent" %>
 <!doctype html>
 <html>
 <head>
@@ -61,7 +61,7 @@
                             <g:select name='level'
                                       noSelection="['':'']"
                                       value="${flash.level}"
-                                      from='${LogEvent.logLevels}'>
+                                      from='${LogLevelUtil.logLevels}'>
                             </g:select>
                         </td>
                         <td valign='top' class='value'>
