@@ -1,57 +1,51 @@
 <!doctype html>
 <html>
-	<head>
-		<meta name="layout" content="bootstrap"/>
-		<title>logtopus-ui</title>
-	</head>
+<body>
+<div class="row-fluid" style="min-height: 700px">
+    <aside class=" well span4">
+        <div class="row-fluid">
+            <h5>Current Distribution</h5>
+            <div>
+                <g:include controller="charts" action="levelPieChart"/>
+            </div>
+            <hr/>
+        </div>
 
-	<body>
-		<div class="row-fluid">
-			<aside id="application-status" class="span3">
-				<div class="well sidebar-nav">
-					<h5>Application Status</h5>
-					<ul>
-						<li>App version: <g:meta name="app.version"/></li>
-						<li>Grails version: <g:meta name="app.grails.version"/></li>
-						<li>Groovy version: ${org.codehaus.groovy.runtime.InvokerHelper.getVersion()}</li>
-						<li>JVM version: ${System.getProperty('java.version')}</li>
-						<li>Controllers: ${grailsApplication.controllerClasses.size()}</li>
-						<li>Domains: ${grailsApplication.domainClasses.size()}</li>
-						<li>Services: ${grailsApplication.serviceClasses.size()}</li>
-						<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
-					</ul>
-					<h5>Installed Plugins</h5>
-					<ul>
-						<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
-							<li>${plugin.name} - ${plugin.version}</li>
-						</g:each>
-					</ul>
-				</div>
-			</aside>
+        <div class="row-fluid">
+            <div>
+                <h3>Try It</h3>
+                <ul class="nav nav-list">
+                    <li><g:link controller="logEvent">Event Filter</g:link></li>
+                    <li><g:link controller="issueRanking" action="top10">Top 10 Issues</g:link></li>
+                    <li><g:link controller="charts" action="distributionBarChart" params="[time: '1h']"> Distribution over the last Hour</g:link></li>
+                    <li><g:link controller="charts" action="distributionBarChart" params="[time: '1d']"> Distribution over the last Day</g:link></li>
+                    <li><g:link controller="charts" action="distributionBarChart" params="[time: '1w']"> Distribution over the last Week</g:link></li>
+                    <li><g:link controller="charts" action="levelPieChart">Total Overview</g:link> </li>
+                </ul>
+            </div>
 
-			<section id="main" class="span9">
+        </div>
+    </aside>
 
-				<div class="hero-unit">
-					<h1>Welcome to logtopus-ui</h1>
-				</div>
-					
-				<div class="row-fluid">
-					
-					<div class="span4">
-						<h2>Try It</h2>
-						<ul class="nav nav-list">
-							<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-								<li><g:link controller="${c.logicalPropertyName}">${c.naturalName}</g:link></li>
-							</g:each>
-                            <li><a href="logEvent/distributionBarChart">Log Level Distribution</a></li>
-                            <li><a href="logEvent/levelPieChart">Message Level Overview</a></li>
-						</ul>
-					</div>
+    <section id="main" class="span8">
 
-				</div>
+        <div class="hero-unit">
+            <div class="row-fluid">
+                <span class="span2"><g:img dir="images" file="logtopus_icon_small.png"></g:img>&nbsp;</span>
+                <span class="span10">
+                    <h1>Welcome to Logtopus</h1>
+                    <p>Need a helping... tentacle?</p>
+                </span>
 
-			</section>
-		</div>
-		
-	</body>
+            </div>
+        </div>
+
+        <g:include controller="issueRanking" action="top10"/>
+
+
+
+    </section>
+</div>
+
+</body>
 </html>

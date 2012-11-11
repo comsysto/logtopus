@@ -1,11 +1,11 @@
 package com.comsysto.logtopus
 
+import org.apache.log4j.Level
 import org.bson.types.ObjectId
 
 class LogEvent {
 
     ObjectId id
-
     String logger
     String level
     String message
@@ -16,7 +16,7 @@ class LogEvent {
     String applicationName
     String sha1
     String exceptionName
-
+    List<String> stacktrace
     Date time
 
     static mapping = {
@@ -26,7 +26,6 @@ class LogEvent {
     static constraints = {
     }
 
-    static def allLogLevels() {
-        ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL']
-    }
+    static mapWith = "mongo"
+
 }

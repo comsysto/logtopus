@@ -5,7 +5,6 @@ import org.bson.types.ObjectId
 class DynamicLogEvent {
 
     ObjectId id
-
     String logger
     String level
     String message
@@ -15,8 +14,12 @@ class DynamicLogEvent {
     String applicationVersion
     String applicationName
     String sha1
+    String exceptionName
+    List<String> stacktrace
 
     Date time
+
+    static mapWith = "mongo"
 
     static mapping = {
         collection "logs"

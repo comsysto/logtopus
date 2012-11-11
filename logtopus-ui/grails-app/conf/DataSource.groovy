@@ -4,6 +4,6 @@ grails {
         port = 27017
         username = ""
         password = ""
-        databaseName = "logtopus-db"
+        databaseName = "logtopus"
     }
 }
