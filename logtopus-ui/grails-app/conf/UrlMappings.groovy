@@ -1,5 +1,7 @@
 class UrlMappings {
 
+    static excludes = ["/todo.html"]
+
 	static mappings = {
 		"/$controller/$action?/$id?"{
 			constraints {
