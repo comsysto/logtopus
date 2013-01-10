@@ -6,7 +6,6 @@ class TodoController {
 
     static allowedMethods = [getTodos: "GET", save: "POST", done: "POST"]
 
-
     def getTodos() {
         render Todo.findAllByDone(false) as JSON
     }
@@ -19,13 +18,12 @@ class TodoController {
     }
 
     def done() {
-
-        def todo = Todo.findById(new ObjectId((String) params.id ))
+        def todo = Todo.get( new ObjectId(params.id) )
         if (todo){
             todo.done = true
             todo.save()
         }
-        getTodos()
+        render(status: 200)
     }
 
 }
