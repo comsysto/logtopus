@@ -21,14 +21,14 @@ class IssueRankingController {
         for (Object o : top10) {
             result.add((EventAggregate) o)
         }
+//TODO: Update to 2.2.0 broke that, FIX!
+//        def sortedResult = result.sort(new Comparator<EventAggregate>() {
+//            @Override
+//            int compare(EventAggregate o1, EventAggregate o2) {
+//                return LogLevelUtil.levelToPriority(o2.level).compareTo(LogLevelUtil.levelToPriority(o1.level))
+//            }
+//        })
 
-        def sortedResult = result.sort(new Comparator<EventAggregate>() {
-            @Override
-            int compare(EventAggregate o1, EventAggregate o2) {
-                return LogLevelUtil.levelToPriority(o2.level).compareTo(LogLevelUtil.levelToPriority(o1.level))
-            }
-        })
-
-        [top10List: sortedResult]
+        [top10List: result]
     }
 }

@@ -1,6 +1,5 @@
 package com.comsysto.logtopus
 
-import org.apache.log4j.Level
 import org.bson.types.ObjectId
 
 class LogEvent {
